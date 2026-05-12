@@ -9,6 +9,7 @@ import { EventCard } from '@/components/event-card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search, Filter, SlidersHorizontal, MapPin, Calendar as CalendarIcon, ChevronDown } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -47,13 +48,11 @@ export default function ExplorePage() {
       
       <main className="pt-32 pb-20 px-6">
         <div className="max-w-7xl mx-auto">
-          {/* Hero Section */}
           <div className="mb-12 space-y-4">
             <h1 className="text-5xl lg:text-7xl font-black tracking-tight">Explore <span className="text-primary italic">Events</span></h1>
             <p className="text-xl text-muted-foreground font-medium max-w-2xl">Discover and book the most exclusive culinary and lifestyle events happening worldwide.</p>
           </div>
 
-          {/* Search & Filters */}
           <div className="bg-card border border-border/50 p-4 rounded-[2rem] shadow-sm mb-12 flex flex-col lg:flex-row gap-4 items-center">
             <div className="relative flex-1 group w-full">
               <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
@@ -78,7 +77,6 @@ export default function ExplorePage() {
             </div>
           </div>
 
-          {/* Categories Scroll */}
           <div className="flex items-center gap-2 mb-12 overflow-x-auto pb-4 no-scrollbar">
             {CATEGORIES.map((cat) => (
               <Button
@@ -95,7 +93,6 @@ export default function ExplorePage() {
             ))}
           </div>
 
-          {/* Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
             {filteredEvents.map((event, i) => (
               <motion.div
@@ -120,7 +117,6 @@ export default function ExplorePage() {
             </div>
           )}
 
-          {/* Pagination Placeholder */}
           {filteredEvents.length > 0 && (
             <div className="mt-20 flex justify-center items-center gap-3">
               <Button variant="outline" className="rounded-xl h-12 w-12 font-bold border-2">1</Button>
