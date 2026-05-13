@@ -3,11 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Calendar, User } from 'lucide-react';
+import { Menu, X, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useUIStore } from '@/store/use-ui-store';
 import { useAuthStore } from '@/store/use-auth-store';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
