@@ -11,10 +11,9 @@ import {
   Calendar, 
   CreditCard, 
   Plus, 
-  ChevronRight,
   ArrowUpRight,
-  ArrowDownRight,
-  Activity
+  Activity,
+  ArrowRight
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { PremiumButton } from '@/components/ui/premium-button';
@@ -34,28 +33,32 @@ const revenueData = [
 
 export default function UserDashboard() {
   return (
-    <div className="max-w-[1400px] mx-auto space-y-10">
+    <div className="space-y-12">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div className="space-y-1">
-          <h1 className="text-3xl font-black tracking-tight">Overview</h1>
-          <p className="text-muted-foreground text-sm font-medium">Monitoring your event ecosystem performance in real-time.</p>
+          <div className="flex items-center gap-2 text-primary font-black uppercase tracking-[0.2em] text-[10px] mb-2 opacity-60">
+            <span className="w-8 h-[1px] bg-primary"></span>
+            System Overview
+          </div>
+          <h1 className="text-4xl font-black tracking-tight">Welcome Back</h1>
+          <p className="text-muted-foreground text-sm font-medium">Real-time intelligence and ecosystem performance.</p>
         </div>
         <div className="flex items-center gap-3">
-          <PremiumButton variant="outline" size="sm">Export Report</PremiumButton>
+          <PremiumButton variant="outline" size="sm" className="rounded-full">Export Intelligence</PremiumButton>
           <Link href="/events/create">
-            <PremiumButton size="sm" icon={<Plus size={16} />}>Create Event</PremiumButton>
+            <PremiumButton size="sm" icon={<Plus size={16} />} className="rounded-full">Create Event</PremiumButton>
           </Link>
         </div>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {[
-          { title: 'Total Revenue', value: '£24,560', change: '+12.5%', trend: 'up', icon: CreditCard },
-          { title: 'Active Events', value: '12', change: '+2', trend: 'up', icon: Calendar },
-          { title: 'Total Attendees', value: '1,429', change: '+18%', trend: 'up', icon: Users },
-          { title: 'Conversion Rate', value: '14.2%', change: '-2.4%', trend: 'down', icon: Activity },
+          { title: 'Total Revenue', value: '£24,560', change: '+12.5%', trend: 'up', icon: CreditCard, color: 'text-emerald-600' },
+          { title: 'Active Events', value: '12', change: '+2', trend: 'up', icon: Calendar, color: 'text-primary' },
+          { title: 'Total Attendees', value: '1,429', change: '+18%', trend: 'up', icon: Users, color: 'text-blue-600' },
+          { title: 'Conversion Rate', value: '14.2%', change: '-2.4%', trend: 'down', icon: Activity, color: 'text-rose-600' },
         ].map((stat, i) => (
           <motion.div
             key={i}
@@ -63,22 +66,22 @@ export default function UserDashboard() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
           >
-            <Card className="rounded-2xl border-border/40 shadow-sm hover:shadow-md transition-all duration-300">
-              <CardContent className="p-6 space-y-4">
+            <Card className="rounded-[2rem] border-border/40 shadow-sm hover:shadow-xl hover:shadow-black/5 transition-all duration-500 overflow-hidden group bg-white">
+              <CardContent className="p-8 space-y-6">
                 <div className="flex justify-between items-start">
-                  <div className="p-2 bg-secondary/50 rounded-xl text-primary/80">
-                    <stat.icon size={18} />
+                  <div className="w-12 h-12 bg-secondary/50 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110">
+                    <stat.icon size={20} className={stat.color} />
                   </div>
                   <Badge className={cn(
-                    "rounded-full px-2 py-0 border-none font-bold text-[10px]",
+                    "rounded-full px-3 py-1 border-none font-bold text-[10px] uppercase tracking-widest",
                     stat.trend === 'up' ? "bg-emerald-50 text-emerald-600" : "bg-rose-50 text-rose-600"
                   )}>
                     {stat.change}
                   </Badge>
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{stat.title}</p>
-                  <p className="text-2xl font-black tracking-tight mt-1">{stat.value}</p>
+                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2">{stat.title}</p>
+                  <p className="text-3xl font-black tracking-tight">{stat.value}</p>
                 </div>
               </CardContent>
             </Card>
@@ -86,27 +89,27 @@ export default function UserDashboard() {
         ))}
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid lg:grid-cols-3 gap-10">
         {/* Main Chart */}
-        <Card className="lg:col-span-2 rounded-[2rem] border-border/40 shadow-sm overflow-hidden">
-          <CardHeader className="p-8 pb-4">
-            <div className="flex justify-between items-center">
+        <Card className="lg:col-span-2 rounded-[2.5rem] border-border/40 shadow-sm overflow-hidden bg-white">
+          <CardHeader className="p-10 pb-4">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
-                <CardTitle className="text-xl font-bold">Revenue Velocity</CardTitle>
-                <CardDescription>Daily breakdown of ticket sales volume</CardDescription>
+                <CardTitle className="text-xl font-black">Revenue Velocity</CardTitle>
+                <CardDescription className="text-sm font-medium mt-1">Daily breakdown of monetary flow.</CardDescription>
               </div>
-              <div className="flex bg-secondary/50 p-1 rounded-xl">
-                <button className="px-4 py-1.5 text-xs font-bold bg-white shadow-sm rounded-lg">Week</button>
-                <button className="px-4 py-1.5 text-xs font-bold text-muted-foreground">Month</button>
+              <div className="flex bg-secondary/40 p-1.5 rounded-[1rem]">
+                <button className="px-6 py-2 text-xs font-black uppercase tracking-widest bg-white shadow-sm rounded-xl">Week</button>
+                <button className="px-6 py-2 text-xs font-black uppercase tracking-widest text-muted-foreground/60 hover:text-muted-foreground transition-colors">Month</button>
               </div>
             </div>
           </CardHeader>
-          <CardContent className="p-8 h-[400px]">
+          <CardContent className="p-10 h-[450px]">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={revenueData}>
                 <defs>
                   <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.05}/>
+                    <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.08}/>
                     <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
@@ -115,25 +118,27 @@ export default function UserDashboard() {
                   dataKey="name" 
                   axisLine={false} 
                   tickLine={false} 
-                  tick={{fontSize: 11, fill: '#888', fontWeight: 600}} 
-                  dy={10} 
+                  tick={{fontSize: 10, fill: '#888', fontWeight: 700}} 
+                  dy={15} 
                 />
                 <YAxis 
                   axisLine={false} 
                   tickLine={false} 
-                  tick={{fontSize: 11, fill: '#888', fontWeight: 600}} 
+                  tick={{fontSize: 10, fill: '#888', fontWeight: 700}} 
                   tickFormatter={(val) => `£${val}`} 
                 />
                 <Tooltip 
-                  contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.05)' }}
+                  contentStyle={{ borderRadius: '24px', border: 'none', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.1)' }}
+                  labelStyle={{ fontWeight: 900, marginBottom: '4px' }}
                 />
                 <Area 
                   type="monotone" 
                   dataKey="revenue" 
                   stroke="hsl(var(--primary))" 
-                  strokeWidth={3} 
+                  strokeWidth={4} 
                   fillOpacity={1} 
                   fill="url(#colorRevenue)" 
+                  animationDuration={2000}
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -141,29 +146,34 @@ export default function UserDashboard() {
         </Card>
 
         {/* Recent Activity */}
-        <Card className="rounded-[2rem] border-border/40 shadow-sm overflow-hidden">
-          <CardHeader className="p-8 pb-4">
-            <CardTitle className="text-xl font-bold text-primary">Activity Stream</CardTitle>
-            <CardDescription>Latest events and transaction alerts</CardDescription>
+        <Card className="rounded-[2.5rem] border-border/40 shadow-sm overflow-hidden bg-white">
+          <CardHeader className="p-10 pb-4">
+            <CardTitle className="text-xl font-black">Activity Stream</CardTitle>
+            <CardDescription className="text-sm font-medium mt-1">Real-time alerts and interactions.</CardDescription>
           </CardHeader>
-          <CardContent className="p-8">
-            <div className="space-y-8 relative before:absolute before:left-3 before:top-2 before:bottom-2 before:w-[1px] before:bg-border/60">
+          <CardContent className="p-10">
+            <div className="space-y-10 relative before:absolute before:left-3 before:top-2 before:bottom-2 before:w-[1px] before:bg-border/60">
               {[
                 { title: 'New Booking', desc: 'Marcus booked "Jazz Night"', time: '2m ago', color: 'bg-emerald-500' },
                 { title: 'Payout Sent', desc: '£1,200 transferred to bank', time: '1h ago', color: 'bg-blue-500' },
                 { title: 'Event Sold Out', desc: 'Masterclass is fully booked', time: '3h ago', color: 'bg-rose-500' },
                 { title: 'Profile Updated', desc: 'Biography changed', time: 'Yesterday', color: 'bg-amber-500' },
               ].map((item, i) => (
-                <div key={i} className="flex gap-6 relative z-10">
-                  <div className={cn("w-6 h-6 rounded-full border-4 border-white shadow-sm shrink-0", item.color)} />
-                  <div className="space-y-1">
-                    <p className="text-sm font-bold leading-none">{item.title}</p>
-                    <p className="text-xs text-muted-foreground font-medium">{item.desc}</p>
-                    <p className="text-[10px] text-muted-foreground/60 uppercase font-black tracking-widest">{item.time}</p>
+                <div key={i} className="flex gap-8 relative z-10">
+                  <div className={cn("w-6 h-6 rounded-full border-4 border-white shadow-md shrink-0 mt-1", item.color)} />
+                  <div className="space-y-2">
+                    <p className="text-sm font-black leading-none">{item.title}</p>
+                    <p className="text-xs text-muted-foreground font-medium leading-relaxed">{item.desc}</p>
+                    <p className="text-[9px] text-muted-foreground/40 uppercase font-black tracking-[0.2em]">{item.time}</p>
                   </div>
                 </div>
               ))}
             </div>
+            <Link href="/notifications" className="mt-12 block">
+              <button className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl border-2 border-dashed border-border/60 text-xs font-black uppercase tracking-widest text-muted-foreground hover:border-primary/20 hover:text-primary transition-all">
+                View All Activity <ArrowRight size={14} />
+              </button>
+            </Link>
           </CardContent>
         </Card>
       </div>

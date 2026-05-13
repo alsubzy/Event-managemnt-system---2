@@ -1,11 +1,10 @@
-
 "use client";
 
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Calendar, MapPin, Star, Heart, ArrowUpRight, Share2, MoreHorizontal } from 'lucide-react';
+import { Calendar, MapPin, Heart, ArrowUpRight, Share2, MoreHorizontal, ExternalLink } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { useFavoriteStore } from '@/store/use-favorite-store';
@@ -42,14 +41,6 @@ export function EventCard({ id, title, image, date, location, price, category, s
     toast({
       title: isFav ? "Removed from favorites" : "Saved to favorites",
       description: isFav ? `${title} has been removed.` : `${title} is now in your collection.`,
-      action: isFav ? (
-        <button 
-          onClick={() => toggleFavorite(id)} 
-          className="text-xs font-bold uppercase tracking-widest text-primary underline"
-        >
-          Undo
-        </button>
-      ) : undefined,
     });
   };
 
@@ -58,26 +49,26 @@ export function EventCard({ id, title, image, date, location, price, category, s
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -4 }}
-      className="group bg-card rounded-[1.5rem] overflow-hidden border border-border/40 transition-all duration-300 hover:shadow-xl hover:shadow-black/5"
+      className="group bg-white rounded-[2rem] overflow-hidden border border-border/40 transition-all duration-500 hover:shadow-2xl hover:shadow-black/5"
     >
       <div className="aspect-[16/10] relative overflow-hidden bg-muted">
         <Image 
           src={image} 
           fill 
           alt={title} 
-          className="object-cover transition-transform duration-700 group-hover:scale-110"
+          className="object-cover transition-transform duration-1000 group-hover:scale-110"
           data-ai-hint="event visual"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         
-        <div className="absolute top-4 right-4 flex flex-col gap-2 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+        <div className="absolute top-5 right-5 flex flex-col gap-2.5 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-500">
           <button 
             onClick={handleToggleFavorite}
             className={cn(
-              "w-10 h-10 rounded-xl backdrop-blur-md border flex items-center justify-center transition-all",
+              "w-11 h-11 rounded-[1.25rem] backdrop-blur-xl border flex items-center justify-center transition-all duration-300 shadow-xl",
               isFav 
                 ? "bg-rose-500 border-rose-500 text-white" 
-                : "bg-white/80 border-white/20 text-foreground hover:text-rose-500"
+                : "bg-white/90 border-white/20 text-foreground hover:text-rose-500"
             )}
           >
             <Heart size={18} className={cn(isFav && "fill-current")} />
@@ -85,55 +76,65 @@ export function EventCard({ id, title, image, date, location, price, category, s
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="w-10 h-10 rounded-xl bg-white/80 backdrop-blur-md border border-white/20 flex items-center justify-center text-foreground hover:bg-white transition-all">
+              <button className="w-11 h-11 rounded-[1.25rem] bg-white/90 backdrop-blur-xl border border-white/20 flex items-center justify-center text-foreground hover:bg-white transition-all duration-300 shadow-xl">
                 <MoreHorizontal size={18} />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="rounded-xl p-2 min-w-[140px]">
-              <DropdownMenuItem className="rounded-lg gap-2 cursor-pointer font-medium">
-                <Share2 size={14} /> Share
+            <DropdownMenuContent align="end" className="rounded-2xl p-2 min-w-[160px] shadow-2xl">
+              <DropdownMenuItem className="rounded-xl gap-3 cursor-pointer font-bold py-3 text-xs uppercase tracking-widest">
+                <Share2 size={14} /> Share Event
               </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-lg gap-2 cursor-pointer font-medium">
-                <Calendar size={14} /> Add to Calendar
+              <DropdownMenuItem className="rounded-xl gap-3 cursor-pointer font-bold py-3 text-xs uppercase tracking-widest">
+                <Calendar size={14} /> Add to Cal
+              </DropdownMenuItem>
+              <DropdownMenuItem className="rounded-xl gap-3 cursor-pointer font-bold py-3 text-xs uppercase tracking-widest text-primary">
+                <ExternalLink size={14} /> Live Page
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
 
         {status && (
-          <div className="absolute top-4 left-4">
-            <Badge className="bg-black/80 backdrop-blur-md text-white border-none font-black text-[8px] uppercase tracking-widest px-3 py-1 rounded-full">
+          <div className="absolute top-5 left-5">
+            <Badge className="bg-black/90 backdrop-blur-xl text-white border-none font-black text-[9px] uppercase tracking-[0.2em] px-4 py-1.5 rounded-full shadow-xl">
               {status}
             </Badge>
           </div>
         )}
       </div>
 
-      <div className="p-5 space-y-4">
+      <div className="p-8 space-y-5">
         <div className="space-y-1">
-          <span className="text-[10px] font-black text-primary/60 uppercase tracking-[0.15em]">{category}</span>
-          <h3 className="text-lg font-bold leading-tight group-hover:text-primary transition-colors line-clamp-1">{title}</h3>
+          <span className="text-[9px] font-black text-primary/40 uppercase tracking-[0.25em]">{category}</span>
+          <h3 className="text-xl font-black leading-tight group-hover:text-primary transition-colors line-clamp-1">{title}</h3>
         </div>
         
-        <div className="space-y-1.5">
-          <div className="flex items-center gap-2 text-xs text-muted-foreground font-medium">
-            <Calendar size={14} className="text-muted-foreground/50" /> 
+        <div className="grid grid-cols-2 gap-4">
+          <div className="flex items-center gap-2.5 text-xs text-muted-foreground font-semibold">
+            <div className="w-8 h-8 rounded-xl bg-secondary/50 flex items-center justify-center text-primary/60">
+              <Calendar size={14} />
+            </div>
             {date}
           </div>
-          <div className="flex items-center gap-2 text-xs text-muted-foreground font-medium">
-            <MapPin size={14} className="text-muted-foreground/50" /> 
-            {location}
+          <div className="flex items-center gap-2.5 text-xs text-muted-foreground font-semibold">
+            <div className="w-8 h-8 rounded-xl bg-secondary/50 flex items-center justify-center text-primary/60">
+              <MapPin size={14} />
+            </div>
+            <span className="truncate">{location.split(',')[0]}</span>
           </div>
         </div>
 
-        <div className="flex items-center justify-between pt-4 border-t border-border/40">
-          <p className="font-black text-foreground">
-            {typeof price === 'number' ? `£${price.toLocaleString()}` : price}
-          </p>
+        <div className="flex items-center justify-between pt-6 border-t border-border/40">
+          <div className="space-y-0.5">
+            <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">From</p>
+            <p className="font-black text-lg text-[#0B1221]">
+              {typeof price === 'number' ? `£${price.toLocaleString()}` : price}
+            </p>
+          </div>
           <Link href={`/events/${id}`}>
-            <span className="text-xs font-black text-muted-foreground group-hover:text-primary transition-all flex items-center gap-1 uppercase tracking-widest">
+            <button className="h-12 px-6 rounded-2xl bg-[#0B1221] text-white text-xs font-black uppercase tracking-widest hover:opacity-90 hover:scale-[1.02] transition-all flex items-center gap-2">
               Details <ArrowUpRight size={14} />
-            </span>
+            </button>
           </Link>
         </div>
       </div>
