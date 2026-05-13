@@ -20,19 +20,19 @@ export function PremiumButton({
   size = 'md',
   ...props 
 }: PremiumButtonProps) {
-  const baseStyles = "relative flex items-center justify-center gap-2 font-bold tracking-tight transition-all duration-300 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed select-none overflow-hidden";
+  const baseStyles = "relative flex items-center justify-center gap-2 font-bold transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed select-none";
   
   const variants = {
-    primary: "bg-[#0B1221] text-white hover:bg-black hover:shadow-xl hover:shadow-black/20",
-    outline: "bg-transparent border-2 border-border/60 text-foreground hover:bg-secondary/40 hover:border-primary/20",
-    ghost: "bg-transparent text-muted-foreground hover:text-primary hover:bg-secondary/40",
+    primary: "bg-slate-900 text-white hover:bg-black shadow-sm",
+    outline: "bg-transparent border border-slate-200 text-slate-900 hover:bg-slate-50",
+    ghost: "bg-transparent text-slate-500 hover:text-slate-900 hover:bg-slate-100/50",
     danger: "bg-rose-600 text-white hover:bg-rose-700 shadow-sm"
   };
 
   const sizes = {
-    sm: "px-6 py-2.5 text-[10px] uppercase tracking-widest rounded-2xl",
-    md: "px-8 py-3.5 text-sm rounded-2xl",
-    lg: "px-10 py-5 text-base rounded-[1.5rem]"
+    sm: "px-4 py-2 text-[11px] rounded-lg",
+    md: "px-6 py-3 text-sm rounded-xl",
+    lg: "px-8 py-4 text-base rounded-2xl"
   };
 
   return (
@@ -45,7 +45,7 @@ export function PremiumButton({
         <Loader2 className="w-4 h-4 animate-spin" />
       ) : (
         <>
-          {icon && <span className="shrink-0 transition-transform group-hover:scale-110">{icon}</span>}
+          {icon && <span className="shrink-0 transition-transform">{icon}</span>}
           {children}
         </>
       )}
