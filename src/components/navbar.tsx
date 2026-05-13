@@ -3,14 +3,17 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Calendar, Search, Bell, User } from 'lucide-react';
+import { Menu, X, Calendar, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useUIStore } from '@/store/use-ui-store';
+import { useAuthStore } from '@/store/use-auth-store';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { isDarkMode, toggleDarkMode } = useUIStore();
+  const { user, isAuthenticated } = useAuthStore();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,14 +52,29 @@ export function Navbar() {
           <Button variant="ghost" size="icon" onClick={toggleDarkMode}>
             {isDarkMode ? '🌙' : '☀️'}
           </Button>
-          <Link href="/login">
-            <Button variant="ghost">Sign In</Button>
-          </Link>
-          <Link href="/register">
-            <Button className="rounded-full px-6 shadow-md hover:shadow-lg transition-all">
-              Get Started
-            </Button>
-          </Link>
+          
+          {isAuthenticated ? (
+            <Link href="/dashboard">
+              <Button variant="ghost" className="gap-2 rounded-full pr-1">
+                Dashboard
+                <Avatar className="h-8 w-8 border border-primary/20">
+                  <AvatarImage src={user?.avatar} />
+                  <AvatarFallback>{user?.name?.[0]}</AvatarFallback>
+                </Avatar>
+              </Button>
+            </Link>
+          ) : (
+            <>
+              <Link href="/login">
+                <Button variant="ghost">Sign In</Button>
+              </Link>
+              <Link href="/register">
+                <Button className="rounded-full px-6 shadow-md hover:shadow-lg transition-all">
+                  Get Started
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile Toggle */}
@@ -69,22 +87,37 @@ export function Navbar() {
       </div>
 
       {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-background border-b p-6 animate-in slide-in-from-top duration-300">
-          <div className="flex flex-col gap-4">
-            <Link href="/explore" className="text-lg font-medium">Explore</Link>
-            <Link href="/categories" className="text-lg font-medium">Categories</Link>
-            <Link href="/pricing" className="text-lg font-medium">Pricing</Link>
-            <hr />
-            <Link href="/login">
-              <Button variant="outline" className="w-full">Sign In</Button>
-            </Link>
-            <Link href="/register">
-              <Button className="w-full">Get Started</Button>
-            </Link>
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="md:hidden absolute top-full left-0 right-0 bg-background border-b p-6 shadow-xl"
+          >
+            <div className="flex flex-col gap-4">
+              <Link href="/explore" className="text-lg font-medium" onClick={() => setMobileMenuOpen(false)}>Explore</Link>
+              <Link href="/categories" className="text-lg font-medium" onClick={() => setMobileMenuOpen(false)}>Categories</Link>
+              <Link href="/pricing" className="text-lg font-medium" onClick={() => setMobileMenuOpen(false)}>Pricing</Link>
+              <hr />
+              {isAuthenticated ? (
+                <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
+                  <Button className="w-full h-12 rounded-xl">Go to Dashboard</Button>
+                </Link>
+              ) : (
+                <div className="grid grid-cols-2 gap-4">
+                  <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
+                    <Button variant="outline" className="w-full h-12 rounded-xl">Sign In</Button>
+                  </Link>
+                  <Link href="/register" onClick={() => setMobileMenuOpen(false)}>
+                    <Button className="w-full h-12 rounded-xl">Get Started</Button>
+                  </Link>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }

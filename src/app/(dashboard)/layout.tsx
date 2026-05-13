@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   LayoutDashboard, 
@@ -22,10 +22,12 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { useUIStore } from '@/store/use-ui-store';
+import { useAuthStore } from '@/store/use-auth-store';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useToast } from '@/hooks/use-toast';
 
 const navItems = [
   { name: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
@@ -40,8 +42,22 @@ const navItems = [
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { sidebarOpen, toggleSidebar } = useUIStore();
+  const { user, logout, isAuthenticated } = useAuthStore();
   const pathname = usePathname();
+  const router = useRouter();
+  const { toast } = useToast();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    toast({
+      title: "Signed out",
+      description: "You have been successfully logged out.",
+    });
+    router.replace('/login');
+  };
+
+  if (!isAuthenticated) return null;
 
   return (
     <div className="min-h-screen bg-background flex flex-col lg:flex-row overflow-hidden">
@@ -59,7 +75,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <Calendar className="text-primary-foreground w-6 h-6" />
             </div>
             {sidebarOpen && (
-              <span className="text-xl font-bold tracking-tight text-foreground whitespace-nowrap overflow-hidden">
+              <span className="text-xl font-bold tracking-tight text-foreground whitespace-nowrap overflow-hidden text-ellipsis">
                 Arwa <span className="text-primary">Cakes</span>
               </span>
             )}
@@ -92,6 +108,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <div className="p-4 border-t">
           <Button 
             variant="ghost" 
+            onClick={handleLogout}
             className={cn("w-full flex items-center gap-4 rounded-2xl text-muted-foreground hover:text-destructive hover:bg-destructive/10", !sidebarOpen && "justify-center px-0")}
           >
             <LogOut className="w-5 h-5" />
@@ -139,14 +156,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             
             <div className="h-8 w-[1px] bg-border mx-2 hidden md:block" />
             
-            <div className="flex items-center gap-3 pl-2 group cursor-pointer">
+            <div className="flex items-center gap-3 pl-2 group cursor-pointer" onClick={() => router.push('/profile')}>
               <div className="text-right hidden md:block">
-                <p className="text-sm font-bold leading-tight group-hover:text-primary transition-colors">Jane Doe</p>
-                <p className="text-xs text-muted-foreground">Premium User</p>
+                <p className="text-sm font-bold leading-tight group-hover:text-primary transition-colors">{user?.name || 'Jane Doe'}</p>
+                <p className="text-xs text-muted-foreground capitalize">{user?.role?.toLowerCase() || 'User'}</p>
               </div>
               <Avatar className="h-10 w-10 border-2 border-transparent group-hover:border-primary transition-all rounded-xl shadow-sm">
-                <AvatarImage src="https://picsum.photos/seed/user-avatar/100/100" />
-                <AvatarFallback>JD</AvatarFallback>
+                <AvatarImage src={user?.avatar || "https://picsum.photos/seed/user-avatar/100/100"} />
+                <AvatarFallback>{user?.name?.[0] || 'JD'}</AvatarFallback>
               </Avatar>
             </div>
           </div>
@@ -200,7 +217,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   </Link>
                 ))}
               </nav>
-              <Button variant="ghost" className="mt-auto justify-start gap-4 px-4 py-6 text-destructive">
+              <Button 
+                variant="ghost" 
+                onClick={handleLogout}
+                className="mt-auto justify-start gap-4 px-4 py-6 text-destructive"
+              >
                 <LogOut className="w-6 h-6" />
                 <span className="font-medium text-lg">Sign Out</span>
               </Button>
