@@ -62,7 +62,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         className="hidden lg:flex flex-col border-r bg-white relative z-30 transition-all duration-300 shadow-[1px_0_10px_-5px_rgba(0,0,0,0.05)]"
       >
         <div className="p-6 flex items-center justify-between">
-          <Link href="/" className={cn("flex items-center gap-3 transition-opacity", !sidebarOpen && "justify-center w-full")}>
+          <Link href="/dashboard" className={cn("flex items-center gap-3 transition-opacity", !sidebarOpen && "justify-center w-full")}>
             <div className="w-9 h-9 bg-slate-900 rounded-xl flex items-center justify-center shadow-sm shrink-0">
               <Calendar className="text-white w-5 h-5" />
             </div>
@@ -128,7 +128,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               className="fixed left-0 top-0 bottom-0 w-72 bg-white z-50 lg:hidden flex flex-col p-6 shadow-2xl"
             >
               <div className="flex items-center justify-between mb-10">
-                <Link href="/" className="flex items-center gap-3">
+                <Link href="/dashboard" className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center shadow-sm">
                     <Calendar className="text-white w-4 h-4" />
                   </div>

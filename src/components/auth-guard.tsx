@@ -17,12 +17,14 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!mounted) return;
 
-    const isAuthRoute = pathname.startsWith('/login') || pathname.startsWith('/register');
+    const isAuthRoute = pathname === '/' || pathname.startsWith('/login') || pathname.startsWith('/register');
     const isDashboardRoute = pathname.startsWith('/dashboard') || 
                              pathname.startsWith('/events') || 
                              pathname.startsWith('/bookings') || 
                              pathname.startsWith('/analytics') ||
                              pathname.startsWith('/profile') ||
+                             pathname.startsWith('/earnings') ||
+                             pathname.startsWith('/favorites') ||
                              pathname.startsWith('/settings');
 
     if (!isAuthenticated && isDashboardRoute) {
