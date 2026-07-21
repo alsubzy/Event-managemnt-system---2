@@ -181,7 +181,7 @@ export default function BookingDetailPage() {
             
             <div className="flex justify-between items-start relative z-10">
               <div className="space-y-1">
-                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-white/40">Arwa Cakes Pro</p>
+                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-white/40">YEGLEEL EMS</p>
                 <h3 className="text-xl font-bold tracking-tight">Official Ticket</h3>
               </div>
               <Ticket className="text-primary" size={24} />

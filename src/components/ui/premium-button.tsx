@@ -1,53 +1,68 @@
 "use client";
 
 import React from 'react';
-import { cn } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface PremiumButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  icon?: React.ReactNode;
+  variant?: 'default' | 'outline' | 'ghost' | 'destructive' | 'success';
+  size?: 'sm' | 'md' | 'lg' | 'icon';
   loading?: boolean;
-  variant?: 'primary' | 'outline' | 'ghost' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
+  icon?: React.ReactNode;
+  iconPosition?: 'left' | 'right';
+  children?: React.ReactNode;
 }
 
-export function PremiumButton({ 
-  children, 
-  className, 
-  icon, 
-  loading, 
-  variant = 'primary', 
+const variantStyles = {
+  default:     'bg-primary text-white hover:bg-primary/90 shadow-sm shadow-primary/20',
+  outline:     'border border-border bg-white text-foreground hover:bg-slate-50 hover:border-slate-300',
+  ghost:       'text-muted-foreground hover:bg-slate-100 hover:text-foreground',
+  destructive: 'bg-red-500 text-white hover:bg-red-600 shadow-sm shadow-red-200',
+  success:     'bg-emerald-500 text-white hover:bg-emerald-600 shadow-sm shadow-emerald-200',
+};
+
+const sizeStyles = {
+  sm:   'h-8  px-3   text-xs  gap-1.5 rounded-lg',
+  md:   'h-10 px-4   text-sm  gap-2   rounded-lg',
+  lg:   'h-11 px-5   text-sm  gap-2   rounded-xl',
+  icon: 'h-9  w-9    text-sm  rounded-lg justify-center',
+};
+
+export function PremiumButton({
+  variant = 'default',
   size = 'md',
-  ...props 
+  loading = false,
+  icon,
+  iconPosition = 'left',
+  className,
+  children,
+  disabled,
+  ...props
 }: PremiumButtonProps) {
-  const baseStyles = "relative flex items-center justify-center gap-2 font-bold transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed select-none";
-  
-  const variants = {
-    primary: "bg-slate-900 text-white hover:bg-black shadow-sm",
-    outline: "bg-transparent border border-slate-200 text-slate-900 hover:bg-slate-50",
-    ghost: "bg-transparent text-slate-500 hover:text-slate-900 hover:bg-slate-100/50",
-    danger: "bg-rose-600 text-white hover:bg-rose-700 shadow-sm"
-  };
-
-  const sizes = {
-    sm: "px-4 py-2 text-[11px] rounded-lg",
-    md: "px-6 py-3 text-sm rounded-xl",
-    lg: "px-8 py-4 text-base rounded-2xl"
-  };
-
   return (
-    <button 
-      className={cn(baseStyles, variants[variant], sizes[size], className)}
-      disabled={loading || props.disabled}
+    <button
       {...props}
+      disabled={disabled || loading}
+      className={cn(
+        'inline-flex items-center font-medium transition-all duration-150',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-1',
+        'disabled:pointer-events-none disabled:opacity-50',
+        'active:scale-[0.98]',
+        variantStyles[variant],
+        sizeStyles[size],
+        className
+      )}
     >
       {loading ? (
-        <Loader2 className="w-4 h-4 animate-spin" />
+        <Loader2 className="h-3.5 w-3.5 animate-spin shrink-0" />
       ) : (
-        <>
-          {icon && <span className="shrink-0 transition-transform">{icon}</span>}
-          {children}
-        </>
+        icon && iconPosition === 'left' && (
+          <span className="shrink-0">{icon}</span>
+        )
+      )}
+      {children && <span>{children}</span>}
+      {!loading && icon && iconPosition === 'right' && (
+        <span className="shrink-0">{icon}</span>
       )}
     </button>
   );
